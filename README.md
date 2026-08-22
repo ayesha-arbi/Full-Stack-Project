@@ -1,1 +1,1 @@
-# Full-Stack-Project
+MERN STACK APP for Assignment
