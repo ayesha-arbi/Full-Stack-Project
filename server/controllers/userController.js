@@ -28,7 +28,7 @@ exports.searchUsers = async (req, res) => {
                 { status: { $regex: query, $options: "i" } }
             ],
         }
-        const users = await User.find(this.searchQuery).sort({
+        const users = await User.find(searchQuery).sort({
             createdAt: -1
         }).skip(skip).limit(limit)
 
@@ -40,7 +40,7 @@ exports.searchUsers = async (req, res) => {
         })
 
     } catch (error) {
-        res.status(500).json({ message: "Error fetch Statistics", error: error.message })
+        res.status(500).json({ message: "Error searching Users", error: error.message })
     }
 }
 
@@ -63,7 +63,7 @@ exports.getAllUsers = async (req, res) => {
             totalUsers: total
         })
     } catch (error) {
-        res.status(500).json({ message: "Error fetch Statistics", error: error.message })
+        res.status(500).json({ message: "Error fetching Users", error: error.message })
     }
 }
 
@@ -75,7 +75,7 @@ exports.getUserById = async (req, res) => {
         if (!user) return res.status(404).json({ message: "user not found" });
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Error fetch Statistics", error: error.message })
+        res.status(500).json({ message: "Error fetching User", error: error.message })
     }
 }
 
@@ -148,7 +148,18 @@ exports.updateUser = async (req, res) => {
         if(!user) return res.status(404).json({message:"User not found"})
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: "Error fetch Statistics", error: error.message })
+        res.status(500).json({ message: "Error Updating User", error: error.message })
     }
 
+}
+
+//user delete
+exports.deleteUser=async(req,res)=>{
+    try{
+        const user=await User.findByIdAndDelete(req.params.id);
+        if(!user) return res.status(404).json({message:"User not Found"})
+        res.json({message:"User Deleted Successfully",success:true})
+    }catch (error) {
+        res.status(500).json({ message: "Error Deleting User", error: error.message })
+    }
 }
